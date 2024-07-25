@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}">
+<head>
+    <title>Localização</title>
+    
+    <link rel="stylesheet" th:href="@{/vendors/iconfonts/mdi/css/materialdesignicons.min.css}">
+    <link rel="stylesheet" th:href="@{/vendors/css/vendor.bundle.base.css}">
+    <link rel="stylesheet" th:href="@{/vendors/css/vendor.bundle.addons.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="shortcut icon" th:href="@{/images/favicon.png}" />
+    
+    <link rel="stylesheet" 
+	      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+		  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+		  crossorigin="" />
+		  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+		    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+		    crossorigin="">
+	</script>
+    
+    
+    
+    
+    <style>
+		#map {
+			width: 50%;
+			height: 150px;
+			position:fixed;
+			margin-left:350px; 
+			font-size: 1em;
+            }
+		.leaflet-container {
+         overflow: visible; 
+         margin-top:150px !important;
+         height: 100%;
+         position:fixed !important;
+
+		}
+		#mapIcone {
+			color: #17a2b8;
+			font-size: 40px;
+			background-color: transparent;
+		}
+</style> 
+
+</head>
+<body>
+<section layout:fragment="content">
+
+    <div class="row">
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+            <div class="card card-statistics">
+                <div class="card-body">
+                    <div class="clearfix">
+                        <div class="float-left">         
+	                       	 <a class="nav-link" th:href="@{form-elements}">
+	                            <i class="mdi mdi-account-multiple-plus text-danger icon-lg"></i>
+	                         </a>
+                        </div>
+                        
+                        <div class="float-right">
+                            <p class="mb-0 text-right"> Clientes</p>
+                            <div class="fluid-container">
+                                <h3 class="font-weight-medium text-right mb-0">$65,650</h3>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <!--
+                    <p class="text-muted mt-3 mb-0">
+                        <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> 65% lower growth
+                    </p>
+                    -->
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+            <div class="card card-statistics">
+                <div class="card-body">
+                    <div class="clearfix">
+                        <div class="float-left">
+                        <a class="nav-link" th:href="@{form-elements}">
+                            <i class="mdi mdi-gauge text-warning icon-lg"></i>
+                        </a>
+                        </div>
+                        <div class="float-right">
+                            <p class="mb-0 text-right">Contadores</p>
+                            <div class="fluid-container">
+                                <h3 class="font-weight-medium text-right mb-0">3455</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!--
+                    <p class="text-muted mt-3 mb-0">
+                        <i class="mdi mdi-bookmark-outline mr-1" aria-hidden="true"></i> Product-wise sales
+                    </p>
+                    -->
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+            <div class="card card-statistics">
+                <div class="card-body">
+                    <div class="clearfix">
+                        <div class="float-left">
+                        <a class="nav-link" th:href="@{form-elements}">
+                            <i class="mdi mdi-account text-success icon-lg"></i>
+                        </a>
+                        </div>
+                        <div class="float-right">
+                            <p class="mb-0 text-right">Utilizadores</p>
+                            <div class="fluid-container">
+                                <h3 class="font-weight-medium text-right mb-0">5693</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!--
+                    <p class="text-muted mt-3 mb-0">
+                        <i class="mdi mdi-calendar mr-1" aria-hidden="true"></i> Weekly Sales
+                    </p>
+                    -->
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+            <div class="card card-statistics">
+                <div class="card-body">
+                    <div class="clearfix">
+                        <div class="float-left">
+                        <a class="nav-link" th:href="@{form-elements}">
+                            <i class="mdi mdi-map-marker text-info icon-lg"></i>
+                        </a>
+                        </div>
+                        <div class="float-right">
+                            <p class="mb-0 text-right">Localização</p>
+                            <div class="fluid-container">
+                                <h3 class="font-weight-medium text-right mb-0">246</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!--
+                    <p class="text-muted mt-3 mb-0">
+                        <i class="mdi mdi-reload mr-1" aria-hidden="true"></i> Product-wise sales
+                    </p>
+                    -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="map"></div>
+    
+    
+
+    
+</section>
+</body>
+</html>
+
+<script>
+
+	  var map = L.map('map').setView([0.2249, 6.6179], 11);
+		      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+ 			  maxZoom: 19,
+		      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		}).addTo(map);
+		//map.dragging.disable();
+	  $.get("/contador_1/lista", function(data) {	 
+	    for (var i = 0; i < data.length; i++) { 	
+		    var marker = L.marker([data[i].georreferencia.latitude, data[i].georreferencia.longitude], {
+		    title: data[i].georreferencia.descricao  	         
+	        }).addTo(map);
+	     
+        var popupContent = "<span class='popup' > <b>Cliente: </b>  <a href=\"/clientes/detalhes/"+data[i].cliente.idcliente+"\"> " + data[i].cliente.nome + "</a><br>" + 
+       											  "<b>Email :</b>            " + data[i].cliente.email +"<br>"+
+       											  "<b>Nº Conta:</b>          " + data[i].conta_numero +"<br>"+
+                                                  "<b>Nº Contador:</b>       " + data[i].numero_contador +"<br>"+
+                                                  "<b>Leitura Anterior:</b>  " + data[i].leitura_anterior +"<br>"+
+                                                  "<b>Nova Leitura :</b>     " + data[i].nova_leitura +"<br>"+
+                                                  "<b>Amperagem :</b>        " + data[i].amperagem +"<br>"+
+                                                  "<b>Ramal :</b>            " + data[i].ramal +"<br>"+
+                                                  "<b>Latitude:</b>          " + data[i].georreferencia.latitude +"<br>"+
+                                                  "<b>Longitude:</b>         " + data[i].georreferencia.longitude +"<br>"+
+                                                  "<b>Descrição:</b>         " + data[i].georreferencia.descricao +"</span>";
+            
+                                               
+        marker.bindPopup(popupContent);
+        marker.on('mouseover', function (e) {
+        this.openPopup();
+        });    
+         
+    }   	
+});
+		L.circle([0.30693,6.65394], {radius: 10000}).addTo(map);
+ 
+</script>

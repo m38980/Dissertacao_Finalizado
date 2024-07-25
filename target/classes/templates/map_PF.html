@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)http://localhost:8080/map/getAllmap -->
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <title>REST API geoMeter</title>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+              integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+              crossorigin=""/>
+
+        <!--	<link href="https://cdn.jsdelivr.net/gh/fontenele/bootstrap-navbar-dropdowns@5.0.2/dist/css/bootstrap-navbar-dropdowns.min.css"
+                          rel="stylesheet">-->
+
+        <link href="./mapaLeaflet_files/icon" rel="stylesheet">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+
+    </script>
+
+    <style>
+        
+
+        #map {
+            position: relative;
+            top: 6em;
+            left: 6em;
+            width: 80em;
+            height: 50em;
+            margin-left:4em;
+            margin-top:6em;
+        }
+
+        #mapIcone {
+            color: #17a2b8;
+            background-color: transparent;
+        }
+
+
+    </style>
+</head>
+<body>
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    GeoMeter <img alt="" src="./mapaLeaflet_files/api.png" width="50px">
+                </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="http://localhost:8080/" class="material-icons" id="home">home</a></li>
+                    <li><a href="http://localhost:8080/clientes/getAll" class="material-icons" id="clientes">groups</a></li>
+                    <li><a href="http://localhost:8080/contadores/getAll" class="material-icons" id="meter">electric_meter</a></li>
+                    <li><a href="http://localhost:8080/users/getAll" class="material-icons" id="user">manage_accounts</a></li>
+                    <li><a href="http://localhost:8080/map/getAllmap" class="material-icons" id="mapIcone">location_on</a></li>
+
+                </ul>
+                <div class="logado">&nbsp; &nbsp; &nbsp; &nbsp;
+                    &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    Benvindo: <b style="color: blue;"><span>fp</span></b>
+                    &nbsp; Perfil: &nbsp;&nbsp;&nbsp;<b style="color: blue;"><span>[ADMIN]</span>  </b>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+
+                    <form action="http://localhost:8080/logout" title="Sair" method="post" name="logoutForm" hidden="hidden">
+                        <input type="submit" value="Logout">logout
+                    </form>
+                    <a class="material-icons" id="power" title="Logout" href="javascript: document.logoutForm.submit()">settings_power</a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                </ul>
+
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+        <!--/.container-fluid -->
+    </nav>
+
+    <div id="map">
+    </div>
+
+
+
+
+
+    <script>
+
+        var map = L.map('map').setView([0.2249, 6.6179], 11);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+        //map.dragging.disable();
+        $.get("/contador_1/lista", function (data) {
+            for (var i = 0; i < data.length; i++) {
+                var marker = L.marker([data[i].georreferencia.latitude, data[i].georreferencia.longitude], {
+                    title: data[i].georreferencia.descricao
+                }).addTo(map);
+
+                var popupContent = "<span class='popup' > <b>Cliente: </b>  <a href=\"/clientes/detalhes/" + data[i].cliente.idcliente + "\"> " + data[i].cliente.nome + "</a><br>" +
+                        "<b>Email :</b>            " + data[i].cliente.email + "<br>" +
+                        "<b>Nº Conta:</b>          " + data[i].conta_numero + "<br>" +
+                        "<b>Nº Contador:</b>       " + data[i].numero_contador + "<br>" +
+                        "<b>Leitura Anterior:</b>  " + data[i].leitura_anterior + "<br>" +
+                        "<b>Nova Leitura :</b>     " + data[i].nova_leitura + "<br>" +
+                        "<b>Amperagem :</b>        " + data[i].amperagem + "<br>" +
+                        "<b>Ramal :</b>            " + data[i].ramal + "<br>" +
+                        "<b>Latitude:</b>          " + data[i].georreferencia.latitude + "<br>" +
+                        "<b>Longitude:</b>         " + data[i].georreferencia.longitude + "<br>" +
+                        "<b>Descrição:</b>         " + data[i].georreferencia.descricao + "</span>";
+
+
+                marker.bindPopup(popupContent);
+                marker.on('mouseover', function (e) {
+                    this.openPopup();
+                });
+
+            }
+        });
+
+        // L.circle([0.30693,6.65394], {radius: 10000}).addTo(map);
+
+    </script>
+    
+    
+    
+</body>
+
+</html>

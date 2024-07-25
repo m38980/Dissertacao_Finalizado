@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Star Admin</title>
+    <link rel="stylesheet" th:href="@{/vendors/iconfonts/mdi/css/materialdesignicons.min.css}">
+    <link rel="stylesheet" th:href="@{/vendors/css/vendor.bundle.base.css}">
+    <link rel="stylesheet" th:href="@{/vendors/css/vendor.bundle.addons.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="shortcut icon" th:href="@{/images/favicon.png}" />
+    
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+              integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+              crossorigin=""/>
+
+        <!--	<link href="https://cdn.jsdelivr.net/gh/fontenele/bootstrap-navbar-dropdowns@5.0.2/dist/css/bootstrap-navbar-dropdowns.min.css"
+                          rel="stylesheet">-->
+
+        <link href="./mapaLeaflet_files/icon" rel="stylesheet">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+ 
+<style>
+       
+        #map {
+            position: relative;
+            top: -7.5em;
+            left: -5.5em;
+            width: 92em;
+            height: 49.8em;
+            margin-left:4em;
+            margin-top:6em;
+        }
+
+        #mapIcone {
+            color: #17a2b8;
+            background-color: transparent;
+        }
+
+    </style>
+ 
+</head>
+
+<body>
+<div class="container-scroller">
+
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+            <a class="navbar-brand brand-logo" href="index.html">
+                <img th:src="@{/images/logo.svg}" alt="logo" />
+            </a>
+            <a class="navbar-brand brand-logo-mini" href="index.html">
+                <img th:src="@{/images/logo-mini.svg}" alt="logo" />
+            </a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center">
+            <button class="navbar-toggler navbar-toggler d-none d-lg-block navbar-dark align-self-center mr-3" type="button" data-toggle="minimize">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <ul class="navbar-nav navbar-nav-right">
+                <li class="nav-item dropdown d-none d-xl-inline-block">
+                    <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                        <span class="profile-text">Olá, Admin</span>
+                        <img class="img-xs rounded-circle" th:src="@{/images/faces-clipart/pic-1.png}" alt="Profile image">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                       <!-- <a class="dropdown-item mt-2">
+                            Manage Accounts
+                        </a>
+                        <a class="dropdown-item">
+                            Change Password
+                        </a>-->
+                        <a class="dropdown-item">
+                            Sair
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="icon-menu"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item nav-profile">
+                    <div class="nav-link">
+                        <div class="user-wrapper">
+                            <div class="profile-image">
+                                <img th:src="@{/images/faces-clipart/pic-1.png}" alt="profile image">
+                            </div>
+                            <div class="text-wrapper">
+                                <p class="profile-name">Admin</p>
+                                <div>
+                                    <small class="designation text-muted">Administrador</small>
+                                    <span class="status-indicator online"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--
+                        <button class="btn btn-success btn-block">New Project
+                            <i class="mdi mdi-plus"></i>
+                        </button>
+                        -->
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">
+                        <i class="menu-icon mdi mdi-television"></i>
+                        <span class="menu-title">Página Principal</span>
+                    </a>
+                </li>
+       
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/clientes/getAll}">
+                        <i class="menu-icon mdi mdi-account-multiple"></i>
+                        <span class="menu-title">Clientes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/contadores/getAll}">
+                        <i class="menu-icon mdi mdi-gauge"></i>
+                        <span class="menu-title">Contadores</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/users/getAll}">
+                        <i class="menu-icon mdi mdi-account-settings-variant"></i>
+                        <span class="menu-title">Utilizador</span>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/map/getAllmap}">
+                        <i class="menu-icon mdi mdi-map-marker"></i>
+                        <span class="menu-title">Localização</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+
+        <!-- partial -->
+        <div class="main-panel">
+            <div class="content-wrapper-map" layout:fragment="content">
+               
+                
+ <section layout:fragment="content">
+    <div id="map"></div>
+</section>
+            </div>
+            <!-- content-wrapper ends -->
+
+            <!-- partial:partials/_footer.html -->
+            <footer class="footer-map">
+                <div class="container-fluid clearfix">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © FLPP 2024
+              <a href="http://www.bootstrapdash.com/" target="_blank"></a>. Todos Direitos Reservados.</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Sistema Seguro
+              <i class="mdi mdi mdi-lock text-warning"></i>
+            </span>
+                </div>
+            </footer>
+            <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+
+    </div>
+
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+
+<!-- plugins:js -->
+<script th:src="@{/vendors/js/vendor.bundle.base.js}"></script>
+<script th:src="@{/vendors/js/vendor.bundle.addons.js}"></script>
+<script th:src="@{/js/off-canvas.js}"></script>
+<script th:src="@{/js/misc.js}"></script>
+<script th:src="@{/js/dashboard.js}"></script>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        funApplicationDisabled();
+
+        funContactDisabled();
+
+        funProductDisabled();
+
+    });
+
+    function funApplicationDisabled() {
+        $('#app-input-service-id').prop('readOnly', true);
+        $('#app-input-name').prop('disabled', true);
+        $('#app-input-icon').prop('disabled', true);
+        $('#app-input-meta-desc').prop('disabled', true);
+        $('#app-input-meta-key').prop('disabled', true);
+        $('#app-input-meta-google-site').prop('disabled', true);
+        $('#app-btn-cancel').prop('disabled', true);
+        $('#app-btn-save').prop('disabled', true);
+        $('#app-btn-edit').prop('disabled', false);
+    }
+
+    function funContactDisabled() {
+        $('#contact-input-service-id').prop('readOnly', true);
+        $('#contact-name').prop('disabled', true);
+        $('#contact-phone').prop('disabled', true);
+        $('#contact-sms').prop('disabled', true);
+        $('#contact-hiMessage').prop('disabled', true);
+        $('#contact-address').prop('disabled', true);
+        $('#contact-email').prop('disabled', true);
+        $('#contact-btn-cancel').prop('disabled', true);
+        $('#contact-btn-save').prop('disabled', true);
+        $('#contact-btn-edit').prop('disabled', false);
+    }
+
+    function funProductDisabled() {
+        $('#product-input-uuid').prop('readOnly', true);
+        $('#product-input-name').prop('disabled', true);
+        $('#product-input-img-src').prop('disabled', true);
+        $('#product-input-img-alt').prop('disabled', true);
+        $('#product-input-href').prop('disabled', true);
+        $('#product-input-price').prop('disabled', true);
+        $('#product-input-brochure').prop('disabled', true);
+        $('#product-btn-cancel').prop('disabled', true);
+        $('#product-btn-save').prop('disabled', true);
+        $('#product-btn-edit').prop('disabled', false);
+    }
+
+</script>
+
+<script>
+
+	  var map = L.map('map').setView([0.2249, 6.6179], 11);
+		      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+ 			  maxZoom: 19,
+		      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		}).addTo(map);
+		//map.dragging.disable();
+	  $.get("/contador_1/lista", function(data) {	 
+	    for (var i = 0; i < data.length; i++) { 	
+		    var marker = L.marker([data[i].georreferencia.latitude, data[i].georreferencia.longitude], {
+		    title: data[i].georreferencia.descricao  	         
+	        }).addTo(map);
+	     
+        var popupContent = "<span class='popup' > <b>Cliente: </b>  <a href=\"/clientes/detalhes/"+data[i].cliente.idcliente+"\"> " + data[i].cliente.nome + "</a><br>" + 
+       											  "<b>Email :</b>            " + data[i].cliente.email +"<br>"+
+       											  "<b>Nº Conta:</b>          " + data[i].conta_numero +"<br>"+
+                                                  "<b>Nº Contador:</b>       " + data[i].numero_contador +"<br>"+
+                                                  "<b>Leitura Anterior:</b>  " + data[i].leitura_anterior +"<br>"+
+                                                  "<b>Nova Leitura :</b>     " + data[i].nova_leitura +"<br>"+
+                                                  "<b>Amperagem :</b>        " + data[i].amperagem +"<br>"+
+                                                  "<b>Ramal :</b>            " + data[i].ramal +"<br>"+
+                                                  "<b>Latitude:</b>          " + data[i].georreferencia.latitude +"<br>"+
+                                                  "<b>Longitude:</b>         " + data[i].georreferencia.longitude +"<br>"+
+                                                  "<b>Descrição:</b>         " + data[i].georreferencia.descricao +"</span>";
+            
+                                               
+        marker.bindPopup(popupContent);
+        marker.on('mouseover', function (e) {
+        this.openPopup();
+        });    
+         
+    }   	
+});
+		L.circle([0.30693,6.65394], {radius: 10000}).addTo(map);
+ 
+</script>
+
+
+</body>
+</html>
